@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.1">
+    <file datatype="php" original="src/Resources/contao/languages/en/tl_member.php" source-language="en">
+        <body>
+            <trans-unit id="tl_member.geo_latitude.0">
+                <source>Latitude</source>
+            </trans-unit>
+            <trans-unit id="tl_member.geo_latitude.1">
+                <source>Please enter the latitude of the geo location.</source>
+            </trans-unit>
+            <trans-unit id="tl_member.geo_longitude.0">
+                <source>Longitude</source>
+            </trans-unit>
+            <trans-unit id="tl_member.geo_longitude.1">
+                <source>Please enter the Longitude of the geo location.</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace ErdmannFreunde\ContaoMemberMapBundle\Module;
 
-use Contao\{BackendTemplate, Module};
+use Contao\{BackendTemplate, Module, StringUtil, System};
+use Doctrine\DBAL\Connection;
 use Patchwork\Utf8;
 
 
@@ -31,16 +32,29 @@ class MemberMap extends Module
 
     protected function compile(): void
     {
-        $places = [
-            ['Gifhorn', 52.484674, 10.544454],
-            ['Alfeld', 51.986717, 9.824915],
-            ['Paderborn', 51.718308, 8.755471],
-            ['Linz', 48.3059078, 14.286198],
-            ['Zell am Main', 49.8090598, 9.8717161],
-            ['Bad Breisig', 50.5093, 7.298130000000015]
-        ];
+        $memberGroupIds = StringUtil::deserialize($this->mapMemberGroups, true);
+        /** @var Connection $connection */
+        $connection = System::getContainer()->get('database_connection');
+
+        $statement = $connection->createQueryBuilder()
+            ->select('city', 'geo_longitude', 'geo_latitude')
+            ->from('tl_member', 'm')
+            ->innerJoin('m', 'tl_member_to_group', 'm2g', 'm2g.member_id=m.id')
+            ->where('m2g.group_id IN (:groups)')
+            ->setParameter('groups', $memberGroupIds, Connection::PARAM_STR_ARRAY)
+            ->execute();
+
+        if (false === $statement) {
+            $this->Template->message = 'Keine Einträge gefunden';
+            return;
+        }
+
+        $places = [];
+        while ($row = $statement->fetch(\PDO::FETCH_OBJ)) {
+            $places[] = [$row->city, $row->geo_longitude, $row->geo_latitude];
+        }
 
         $this->Template->placesJson = json_encode($places);
-        $this->Template->apiKey = 'AIzaSyBWhf5ItmL745ISjJ2E0iXSzEoPJm1yp0A';
+        $this->Template->apiKey     = 'AIzaSyBWhf5ItmL745ISjJ2E0iXSzEoPJm1yp0A';
     }
 }
