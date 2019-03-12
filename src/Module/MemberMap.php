@@ -51,7 +51,7 @@ class MemberMap extends Module
 
         $places = [];
         while ($row = $statement->fetch(\PDO::FETCH_OBJ)) {
-            $places[] = [$row->city, $row->geo_longitude, $row->geo_latitude];
+            $places[] = [$row->city, $row->geo_latitude, $row->geo_longitude];
         }
 
         $this->Template->placesJson = json_encode($places);
