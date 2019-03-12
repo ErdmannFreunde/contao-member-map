@@ -1,0 +1,83 @@
+<?php $this->extend('block_unsearchable'); ?>
+
+<?php $this->block('content'); ?>
+
+<div id="fe-map-1" class="membermap_default"></div>
+<script>
+    var objMemberMapView_map_1 = null;
+    var objMemberMapBounds_map_1 = null;
+
+    // Initialize and add the map
+    function initMap() {
+        // The center of the map
+        //var MapCenter = new google.maps.LatLng("51.448737", "10.091779");
+
+        // get bounds for map
+        objMemberMapBounds_map_1 = new google.maps.LatLngBounds();
+
+        // The map, centered at objLatLng
+        map1 = new google.maps.Map(
+            document.getElementById('fe-map-1'), {zoom: 12, /* center: MapCenter, */ maxZoom: 12});
+
+        setMarkers(map1, places);
+
+        // zoom out after the map is done scaling
+        var listener = google.maps.event.addListener(map1, "idle", function () {
+            map1.setZoom(map1.getZoom() - 1);
+            google.maps.event.removeListener(listener);
+        });
+    }
+
+    /**
+     * Data for the markers consisting of a name, a LatLng and a zIndex for
+     * the order in which these markers should display on top of each
+     * other.
+     */
+    var places = JSON.parse('<?= $this->placesJson ?>');
+    //     [
+    //     ['Gifhorn', 52.484674, 10.544454],
+    //     ['Alfeld', 51.986717, 9.824915],
+    //     ['Paderborn', 51.718308, 8.755471],
+    //     ['Linz', 48.3059078, 14.286198],
+    //     ['Zell am Main', 49.8090598, 9.8717161],
+    //     ['Bad Breisig', 50.5093, 7.298130000000015]
+    // ];
+
+    function setMarkers(map, locations) {
+        // Add markers to the map
+
+        // Marker sizes are expressed as a Size of X,Y
+        // where the origin of the image (0,0) is located
+        // in the top left of the image.
+
+        // Origins, anchor positions and coordinates of the marker
+        // increase in the X direction to the right and in
+        // the Y direction down.
+        var image = new google.maps.MarkerImage('images/beachflag.png',
+            // This marker is 20 pixels wide by 32 pixels tall.
+            new google.maps.Size(20, 32),
+            // The origin for this image is 0,0.
+            new google.maps.Point(0, 0),
+            // The anchor for this image is the base of the flagpole at 0,32.
+            new google.maps.Point(0, 32));
+        for (var i = 0; i < locations.length; i++) {
+            var place = locations[i];
+            var myLatLng = new google.maps.LatLng(place[1], place[2]);
+            var marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                //icon: image,
+                title: place[0]
+            });
+
+            // zoom Map
+            objMemberMapBounds_map_1.extend(myLatLng);
+            map1.fitBounds(objMemberMapBounds_map_1);
+        }
+    }
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=<?= $this->apiKey ?>&callback=initMap">
+</script>
+
+<?php $this->endblock(); ?>
