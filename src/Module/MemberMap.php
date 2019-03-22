@@ -37,7 +37,7 @@ class MemberMap extends Module
         $connection = System::getContainer()->get('database_connection');
 
         $statement = $connection->createQueryBuilder()
-            ->select('city', 'geo_longitude', 'geo_latitude')
+            ->select('city', 'geo_longitude', 'geo_latitude', 'm2g.group_id')
             ->from('tl_member', 'm')
             ->innerJoin('m', 'tl_member_to_group', 'm2g', 'm2g.member_id=m.id')
             ->where('m2g.group_id IN (:groups)')
@@ -51,7 +51,7 @@ class MemberMap extends Module
 
         $places = [];
         while ($row = $statement->fetch(\PDO::FETCH_OBJ)) {
-            $places[] = [$row->city, $row->geo_latitude, $row->geo_longitude];
+            $places[$row->group_id][] = [$row->city, $row->geo_latitude, $row->geo_longitude];
         }
 
         $this->Template->placesJson = json_encode($places);
