@@ -40,20 +40,11 @@
         function setMarkers(map, locations) {
             // Add markers to the map
 
-            // Marker sizes are expressed as a Size of X,Y
-            // where the origin of the image (0,0) is located
-            // in the top left of the image.
-
-            // Origins, anchor positions and coordinates of the marker
-            // increase in the X direction to the right and in
-            // the Y direction down.
-            var image = new google.maps.MarkerImage('images/beachflag.png',
-                // This marker is 20 pixels wide by 32 pixels tall.
-                new google.maps.Size(20, 32),
-                // The origin for this image is 0,0.
-                new google.maps.Point(0, 0),
-                // The anchor for this image is the base of the flagpole at 0,32.
-                new google.maps.Point(0, 32));
+            var icons = [
+            	'/files/v8/dist/img/icon-map-pointer-1s.svg',
+				'/files/v8/dist/img/icon-map-pointer-2s.svg',
+				'/files/v8/dist/img/icon-map-pointer-3s.svg'
+			];
 
             for (var j in locations) {
                 for (var i = 0; i < locations[j].length; i++) {
@@ -62,7 +53,7 @@
                     var marker = new google.maps.Marker({
                         position: myLatLng,
                         map: map,
-                        //icon: image,
+                        icon: icons[Math.floor(Math.random() * icons.length) + 0],
                         title: place[0]
                     });
 
