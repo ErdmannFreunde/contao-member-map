@@ -7,7 +7,7 @@
 <?php endif; ?>
 
 <?php if (strlen($this->placesJson)): ?>
-    <div id="fe-map-1" class="membermap_default"></div>
+    <div id="fe-map-<?= $this->id ?>" class="membermap_default"></div>
     <script>
         var objMemberMapView_map_1 = null;
         var objMemberMapBounds_map_1 = null;
@@ -19,7 +19,7 @@
 
             // The map, centered at objLatLng
             map1 = new google.maps.Map(
-                document.getElementById('fe-map-1'), {zoom: 12, maxZoom: 12});
+                document.getElementById('fe-map-<?= $this->id ?>'), {zoom: 12, maxZoom: 12});
 
             setMarkers(map1, places);
 
