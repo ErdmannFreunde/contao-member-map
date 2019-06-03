@@ -57,7 +57,7 @@ class MemberMap extends Module
                 $title = $row['city'];
             }
 
-            $places[$row->group_id][] = [$title, $row['geo_latitude'], $row['geo_longitude']];
+            $places[$row['group_id']][] = [$title, $row['geo_latitude'], $row['geo_longitude']];
         }
 
         $this->Template->placesJson = json_encode($places);
