@@ -37,7 +37,7 @@ class MemberMap extends Module
         $connection = System::getContainer()->get('database_connection');
 
         $statement = $connection->createQueryBuilder()
-            ->select('*', 'm2g.group_id')
+            ->select('m.*', 'm2g.group_id AS group_id')
             ->from('tl_member', 'm')
             ->innerJoin('m', 'tl_member_to_group', 'm2g', 'm2g.member_id=m.id')
             ->where('m2g.group_id IN (:groups)')
