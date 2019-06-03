@@ -21,9 +21,9 @@ $GLOBALS['TL_DCA']['tl_module']['fields']['mapMemberGroups'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_module']['fields']['mapPlaceTitle'] = [
-    'label'      => &$GLOBALS['TL_LANG']['tl_module']['mapPlaceTitle'],
-    'exclude'    => true,
-    'inputType'  => 'text',
-    'eval'       => ['tl_class' => 'w50', 'chosen' => true],
-    'sql'        => "varchar(255) NOT NULL default ''"
+    'label'     => &$GLOBALS['TL_LANG']['tl_module']['mapPlaceTitle'],
+    'exclude'   => true,
+    'inputType' => 'text',
+    'eval'      => ['tl_class' => 'w50', 'chosen' => true, 'decodeEntities' => true],
+    'sql'       => "varchar(255) NOT NULL default ''"
 ];
