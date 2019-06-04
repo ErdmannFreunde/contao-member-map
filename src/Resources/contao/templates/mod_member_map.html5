@@ -7,44 +7,35 @@
 <?php endif; ?>
 
 <?php if (strlen($this->placesJson)): ?>
-    <div id="fe-map-<?= $this->id ?>" class="membermap_default"></div>
+    <div id="fe-map-<?= $this->id ?>" class="membermap_default" style="min-height: 50vh;"></div>
     <script>
-        var objMemberMapView_map_1 = null;
-        var objMemberMapBounds_map_1 = null;
+      
+        var mapZoom = 12;
+        var mapMaxZoom = 12;
+        var objMemberMapView_map_<?= $this->id ?> = null;
+        var objMemberMapBounds_map_<?= $this->id ?> = null;
 
         // Initialize and add the map
         function initMap() {
             // get bounds for map
-            objMemberMapBounds_map_1 = new google.maps.LatLngBounds();
+            objMemberMapBounds_map_<?= $this->id ?> = new google.maps.LatLngBounds();
 
             // The map, centered at objLatLng
-            map1 = new google.maps.Map(
-                document.getElementById('fe-map-<?= $this->id ?>'), {zoom: 12, maxZoom: 12});
+            map<?= $this->id ?> = new google.maps.Map(
+                document.getElementById('fe-map-<?= $this->id ?>'), {zoom: mapZoom, maxZoom: mapMaxZoom});
 
-            setMarkers(map1, places);
+            setMarkers(map<?= $this->id ?>, places);
 
             // zoom out after the map is done scaling
-            var listener = google.maps.event.addListener(map1, "idle", function () {
-                //map1.setZoom(map1.getZoom() - 1);
+            var listener = google.maps.event.addListener(map<?= $this->id ?>, "idle", function () {
                 google.maps.event.removeListener(listener);
             });
         }
 
-        /**
-         * Data for the markers consisting of a name, a LatLng and a zIndex for
-         * the order in which these markers should display on top of each
-         * other.
-         */
         var places = JSON.parse('<?= $this->placesJson ?>');
 
         function setMarkers(map, locations) {
             // Add markers to the map
-
-            var icons = [
-            	'/files/v8/dist/img/icon-map-pointer-1s.svg',
-				'/files/v8/dist/img/icon-map-pointer-2s.svg',
-				'/files/v8/dist/img/icon-map-pointer-3s.svg'
-			];
 
             for (var j in locations) {
                 for (var i = 0; i < locations[j].length; i++) {
@@ -53,13 +44,12 @@
                     var marker = new google.maps.Marker({
                         position: myLatLng,
                         map: map,
-                        icon: icons[Math.floor(Math.random() * icons.length) + 0],
                         title: place[0]
                     });
 
                     // zoom Map
-                    objMemberMapBounds_map_1.extend(myLatLng);
-                    map1.fitBounds(objMemberMapBounds_map_1);
+                    objMemberMapBounds_map_<?= $this->id ?>.extend(myLatLng);
+                    map<?= $this->id ?>.fitBounds(objMemberMapBounds_map_<?= $this->id ?>);
                 }
             }
         }
