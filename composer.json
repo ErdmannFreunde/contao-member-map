@@ -1,8 +1,11 @@
 {
-  "name": "erdmannfreunde/member-map",
+  "name": "erdmannfreunde/contao-member-map",
   "type": "contao-bundle",
-  "description": "",
+  "description": "Create a Google map showing members from selected member groups.",
   "keywords": [
+    "google map",
+    "contao",
+    "members"
   ],
   "license": "LGPL-3.0-or-later",
   "authors": [
